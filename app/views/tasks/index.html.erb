@@ -1,19 +1,22 @@
 <h1>Do the TODOs</h1>
-
+<% if @current_user %>
 <%= form_with model: @task do |form| %>
   <%= form.text_field "description" %>
   <%= form.submit "Add new task" %>
 <% end %>
 
 <table>
-  <% for task in @tasks %>
-    <tr>
-      <td>
-        <%= task.description %>
-      </td>
-      <td>
-        <%= button_to "Complete", task, method: :delete %>
-      </td>
-    </tr>
-  <% end %>
+  <% for task in @tasks.where({user_id: @current_user.id}) %>
+      <tr>
+        <td>
+          <%= task.description %>
+        </td>
+        <td>
+          <%= button_to "Complete", task, method: :delete %>
+        </td>
+      </tr>
+    <% end %>
 </table>
+<% else %>
+<h3> Login to add tasks! </h3>
+<% end %>
